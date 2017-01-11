@@ -50,7 +50,7 @@
             android:theme="@style/AppTheme.deepOrange"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="org.gateshipone.malp.application.activities.AboutActivity"
+            android:name=".application.activities.AboutActivity"
             android:label="About"
             android:parentActivityName=".application.activities.MainActivity">
             <intent-filter>
@@ -58,7 +58,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="org.gateshipone.malp.application.activities.FanartActivity"
+            android:name=".application.activities.FanartActivity"
             android:label="FanartActivity"
             android:parentActivityName=".application.activities.MainActivity">
             <intent-filter>
@@ -84,9 +84,9 @@
         <receiver android:name=".application.background.WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="org.gateshipone.malp.widget.status_changed" />
-                <action android:name="org.gateshipone.malp.widget.track_changed" />
-                <action android:name="org.gateshipone.malp.widget.server_disconnected"/>
+                <action android:name=".widget.status_changed" />
+                <action android:name=".widget.track_changed" />
+                <action android:name=".widget.server_disconnected"/>
             </intent-filter>
 
             <meta-data

@@ -141,4 +141,6 @@
     <!-- Notification setting -->
     <string name="pref_show_notification_key" translatable="false">pref_show_notification</string>
     <bool name="pref_show_notification_default">false</bool>
+
+    <string name="pref_about_key" translatable="false">pref_about</string>
 </resources>
