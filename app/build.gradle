@@ -40,19 +40,16 @@ android {
             applicationIdSuffix ".debug"
         }
     }
-    productFlavors {
-    }
     lintOptions {
         abortOnError false
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.+'
-    compile 'com.android.support:support-v4:25.+'
-    compile 'com.android.support:design:25.+'
-    compile 'com.android.support:preference-v14:25.+'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'com.android.support:support-v4:25.1.0'
+    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:preference-v14:25.1.0'
     compile 'com.android.volley:volley:1.0.0'
 }
