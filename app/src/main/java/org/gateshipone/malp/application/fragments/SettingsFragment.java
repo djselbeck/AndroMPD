@@ -30,6 +30,7 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 
 import org.gateshipone.malp.R;
+import org.gateshipone.malp.application.activities.AboutActivity;
 import org.gateshipone.malp.application.callbacks.FABFragmentCallback;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
@@ -49,6 +50,15 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
             public boolean onPreferenceClick(Preference preference) {
                 mArtworkCallback.openArtworkSettings();
+                return true;
+            }
+        });
+
+        Preference about = findPreference(getString(R.string.pref_about_key));
+        about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(getContext(), AboutActivity.class));
                 return true;
             }
         });
