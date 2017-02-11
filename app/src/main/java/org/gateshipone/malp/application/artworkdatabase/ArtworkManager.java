@@ -453,6 +453,10 @@ public class ArtworkManager implements ArtistFetchError, AlbumFetchError {
         ConnectivityManager cm =
                 (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 
+	//avoid checking the type of nonexistent connections
+	if (null == cm.getActiveNetworkInfo()) {
+		return;
+	}
 
         boolean isWifi = cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI || cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_ETHERNET;
 
@@ -485,8 +489,13 @@ public class ArtworkManager implements ArtistFetchError, AlbumFetchError {
     public void fetchAlbumImage(final MPDAlbum album) {
         ConnectivityManager cm =
                 (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        boolean isWifi = cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI || cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_ETHERNET;
+        
+	//avoid checking the type of nonexistent connections
+        if (null == cm.getActiveNetworkInfo()) {
+		return;
+	}
+        
+	boolean isWifi = cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI || cm.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_ETHERNET;
 
         if (mWifiOnly && !isWifi) {
             return;
