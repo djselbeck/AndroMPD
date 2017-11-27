@@ -78,6 +78,10 @@ public class MPDCommands {
         return "find album \"" + albumName.replaceAll("\"","\\\\\"") + "\"";
     }
 
+    public static String MPD_COMMAND_REQUEST_ALBUMART(String uri, int offset) {
+        return "albumart \"" + uri.replaceAll("\"","\\\\\"") + "\" " + offset;
+    }
+
     public static String MPD_COMMAND_REQUEST_ARTISTS(boolean groupMBID) {
         if ( !groupMBID ) {
             return "list artist";

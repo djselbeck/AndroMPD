@@ -44,6 +44,8 @@ public class MPDResponses {
     public static final String MPD_RESPONSE_SONG_POS = "Pos: ";
     public static final String MPD_RESPONSE_SONG_ID = "Id: ";
 
+    public static final String MPD_RESPONSE_SIZE = "size: ";
+    public static final String MPD_RESPONSE_BINARY = "binary: ";
 
     public static final String MPD_RESPONSE_PLAYLIST = "playlist: ";
     public static final String MPD_RESPONSE_LAST_MODIFIED = "Last-Modified: ";
