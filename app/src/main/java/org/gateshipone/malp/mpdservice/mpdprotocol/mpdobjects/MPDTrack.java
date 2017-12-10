@@ -40,6 +40,11 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
     private String pTrackTitle;
 
     /**
+     * Name of the song. This is not the song title. The exact meaning of this tag is not well-defined.
+     */
+    private String pTrackName;
+
+    /**
      * Artist of the song
      */
     private String pTrackArtist;
@@ -154,7 +159,7 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
     protected MPDTrack(Parcel in) {
         super(in.readString());
 
-        /**
+        /*
          * Deserialize all properties. Check with serialization method. BOTH NEED TO BE EQUIVALENT
          */
         pTrackTitle = in.readString();
@@ -178,6 +183,8 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
         pSongPosition = in.readInt();
         pSongID = in.readInt();
         pImageFetching = in.readInt() == 1;
+
+        pTrackName = in.readString();
     }
 
     public String getTrackTitle() {
@@ -188,6 +195,13 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
         this.pTrackTitle = pTrackTitle;
     }
 
+    public String getTrackName() {
+        return pTrackName;
+    }
+
+    public void setTrackName(String pTrackName) {
+        this.pTrackName = pTrackName;
+    }
 
     public String getTrackArtist() {
         return pTrackArtist;
@@ -392,6 +406,8 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
         dest.writeInt(pSongPosition);
         dest.writeInt(pSongID);
         dest.writeInt(pImageFetching ? 1 : 0);
+
+        dest.writeString(pTrackName);
     }
 
     public int indexCompare(MPDTrack compFile) {
@@ -426,10 +442,9 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
             title = pathSplit[pathSplit.length - 1];
         }
 
-
         String titleAnother = mPath;
         String[] pathSplitAnother = title.split("/");
-        if (pathSplit.length > 0) {
+        if (pathSplitAnother.length > 0) {
             titleAnother = pathSplit[pathSplit.length - 1];
         }
         return title.toLowerCase().compareTo(titleAnother.toLowerCase());

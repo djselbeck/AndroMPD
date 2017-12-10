@@ -973,6 +973,8 @@ public class MPDConnection {
                 tempFileEntry = new MPDTrack(response.substring(MPDResponses.MPD_RESPONSE_FILE.length()));
             } else if (response.startsWith(MPDResponses.MPD_RESPONSE_TRACK_TITLE)) {
                 ((MPDTrack) tempFileEntry).setTrackTitle(response.substring(MPDResponses.MPD_RESPONSE_TRACK_TITLE.length()));
+            } else if (response.startsWith(MPDResponses.MPD_RESPONSE_TRACK_NAME)) {
+                ((MPDTrack) tempFileEntry).setTrackName(response.substring(MPDResponses.MPD_RESPONSE_TRACK_NAME.length()));
             } else if (response.startsWith(MPDResponses.MPD_RESPONSE_ARTIST_NAME)) {
                 ((MPDTrack) tempFileEntry).setTrackArtist(response.substring(MPDResponses.MPD_RESPONSE_ARTIST_NAME.length()));
             } else if (response.startsWith(MPDResponses.MPD_RESPONSE_ALBUM_ARTIST_NAME)) {
@@ -1074,13 +1076,10 @@ public class MPDConnection {
                     }
                 }
                 tempFileEntry = new MPDDirectory(response.substring(MPDResponses.MPD_RESPONSE_DIRECTORY.length()));
-            } else if (response.startsWith(MPDResponses.MPD_RESPONSE_PLAYLIST_ENTRY_NAME)) {
-                ((MPDTrack) tempFileEntry).setTrackTitle(response.substring(MPDResponses.MPD_RESPONSE_PLAYLIST_ENTRY_NAME.length()));
             }
 
             // Move to the next line.
             response = readLine();
-
         }
 
         /* Add last remaining track to list. */
