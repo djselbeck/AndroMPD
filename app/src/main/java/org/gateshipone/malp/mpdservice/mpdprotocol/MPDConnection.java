@@ -1074,6 +1074,8 @@ public class MPDConnection {
                     }
                 }
                 tempFileEntry = new MPDDirectory(response.substring(MPDResponses.MPD_RESPONSE_DIRECTORY.length()));
+            } else if (response.startsWith(MPDResponses.MPD_RESPONSE_PLAYLIST_ENTRY_NAME)) {
+                ((MPDTrack) tempFileEntry).setTrackTitle(response.substring(MPDResponses.MPD_RESPONSE_PLAYLIST_ENTRY_NAME.length()));
             }
 
             // Move to the next line.
