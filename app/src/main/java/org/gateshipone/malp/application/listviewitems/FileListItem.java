@@ -314,12 +314,12 @@ public class FileListItem extends AbsImageListViewItem {
             // Get track title
             String trackTitle = track.getTrackTitle();
 
-            // If no track title is available show track name
+            // Check for track name
             if (null == trackTitle || trackTitle.isEmpty()) {
                 trackTitle = track.getTrackName();
             }
 
-            // If no track name is available (e.g. streaming URLs) show path
+            // If no track title is available (e.g. streaming URLs) show path
             if (null == trackTitle || trackTitle.isEmpty()) {
                 trackTitle = FormatHelper.getFilenameFromPath(track.getPath());
             }
