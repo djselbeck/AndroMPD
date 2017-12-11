@@ -55,6 +55,11 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
     private String pTrackAlbumArtist;
 
     /**
+     * Track "Name" unspecified tag, could be shown if trackTitle is not set
+     */
+    private String pTrackName;
+
+    /**
      * The date of the song
      */
     private String pDate;
@@ -133,6 +138,7 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
         pTrackArtist = "";
         pTrackAlbum = "";
         pTrackAlbumArtist = "";
+        pTrackName = "";
 
         pDate = "";
 
@@ -161,6 +167,7 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
         pTrackAlbum = in.readString();
         pTrackArtist = in.readString();
         pTrackAlbumArtist = in.readString();
+        pTrackName = in.readString();
 
         pDate = in.readString();
 
@@ -211,6 +218,14 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
 
     public void setTrackAlbumArtist(String pTrackAlbumArtist) {
         this.pTrackAlbumArtist = pTrackAlbumArtist;
+    }
+
+    public String getTrackName() {
+        return pTrackName;
+    }
+
+    public void setTrackName(String name) {
+        pTrackName = name;
     }
 
     public String getDate() {
@@ -376,6 +391,7 @@ public class MPDTrack extends MPDFileEntry implements MPDGenericItem, Parcelable
         dest.writeString(pTrackAlbum);
         dest.writeString(pTrackArtist);
         dest.writeString(pTrackAlbumArtist);
+        dest.writeString(pTrackName);
 
         dest.writeString(pDate);
 
