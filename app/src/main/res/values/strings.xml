@@ -316,6 +316,7 @@
 
     <string name="musicbrainz" translatable="false">MusicBrainz</string>
     <string name="last_fm" translatable="false">Last.fm</string>
+    <string name="mpd_albumart" translatable="false">MPD album art</string>
     <string name="fanart_tv" translatable="false">Fanart.tv</string>
     <string name="provider_off">Off</string>
 
@@ -323,6 +324,7 @@
         <item>@string/provider_off</item>
         <item>@string/musicbrainz</item>
         <item>@string/last_fm</item>
+        <item>@string/mpd_albumart</item>
     </string-array>
 
     <string name="preference_artwork_artist_provider_title">Artist image provider</string>

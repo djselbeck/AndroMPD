@@ -43,8 +43,10 @@ import com.android.volley.VolleyError;
 
 import org.gateshipone.malp.R;
 import org.gateshipone.malp.application.artworkdatabase.network.MALPRequestQueue;
+import org.gateshipone.malp.application.artworkdatabase.network.artprovider.AlbumImageProvider;
 import org.gateshipone.malp.application.artworkdatabase.network.artprovider.FanartTVManager;
 import org.gateshipone.malp.application.artworkdatabase.network.artprovider.LastFMManager;
+import org.gateshipone.malp.application.artworkdatabase.network.artprovider.MPDAlbumArtManager;
 import org.gateshipone.malp.application.artworkdatabase.network.artprovider.MusicBrainzManager;
 import org.gateshipone.malp.application.artworkdatabase.network.responses.AlbumFetchError;
 import org.gateshipone.malp.application.artworkdatabase.network.responses.AlbumImageResponse;
@@ -501,21 +503,22 @@ public class ArtworkManager implements ArtistFetchError, AlbumFetchError {
             return;
         }
 
+        final AlbumImageProvider albumImageProvider;
         if (mAlbumProvider.equals(mContext.getString(R.string.pref_artwork_provider_musicbrainz_key))) {
-            MusicBrainzManager.getInstance(mContext).fetchAlbumImage(album, new Response.Listener<AlbumImageResponse>() {
-                @Override
-                public void onResponse(AlbumImageResponse response) {
-                    new InsertAlbumImageTask().execute(response);
-                }
-            }, this);
+            albumImageProvider = MusicBrainzManager.getInstance(mContext);
         } else if (mAlbumProvider.equals(mContext.getString(R.string.pref_artwork_provider_lastfm_key))) {
-            LastFMManager.getInstance(mContext).fetchAlbumImage(album, new Response.Listener<AlbumImageResponse>() {
-                @Override
-                public void onResponse(AlbumImageResponse response) {
-                    new InsertAlbumImageTask().execute(response);
-                }
-            }, this);
+            albumImageProvider = LastFMManager.getInstance(mContext);
+        } else if (mAlbumProvider.equals(mContext.getString(R.string.pref_artwork_provider_mpd_albumart_key))) {
+            albumImageProvider = MPDAlbumArtManager.getInstance();
+        } else {
+            return;
         }
+        albumImageProvider.fetchAlbumImage(album, new Response.Listener<AlbumImageResponse>() {
+            @Override
+            public void onResponse(AlbumImageResponse response) {
+                new InsertAlbumImageTask().execute(response);
+            }
+        }, this);
     }
 
     /**

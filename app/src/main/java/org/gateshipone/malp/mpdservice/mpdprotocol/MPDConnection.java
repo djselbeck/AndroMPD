@@ -19,7 +19,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
 package org.gateshipone.malp.mpdservice.mpdprotocol;
 
 import android.util.Log;
@@ -34,9 +33,9 @@ import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDOutput;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDPlaylist;
 import org.gateshipone.malp.mpdservice.mpdprotocol.mpdobjects.MPDStatistics;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
@@ -115,8 +114,10 @@ public class MPDConnection {
 
     private Socket pSocket;
 
-    /* BufferedReader for all reading from the socket */
-    private BufferedReader pReader;
+    /**
+     * Reader for all reading from the socket
+     */
+    private MPDResponseReader pReader;
 
     /* PrintWriter for all writing to the socket */
     private PrintWriter pWriter;
@@ -300,7 +301,7 @@ public class MPDConnection {
             /* Create the reader used for reading from the socket. */
             if (pReader == null) {
                 try {
-                    pReader = new BufferedReader(new InputStreamReader(pSocket.getInputStream()));
+                    pReader = new MPDResponseReader(pSocket.getInputStream());
                 } catch (IOException e) {
                     handleSocketError();
                     return;
@@ -1308,6 +1309,66 @@ public class MPDConnection {
             // Sort with disc & track number
             MPDSortHelper.sortFileListNumeric(result);
             return result;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Since MPD v. 0.21 album art data of each track can be requested
+     * @param track Path of track
+     * @return Album art image as byte array
+     */
+    public synchronized byte[] getAlbumArt(String track) {
+        int size = Integer.MAX_VALUE, offset = 0;
+        try {
+
+            ByteArrayOutputStream byteOutputStream = null;
+            while (offset < size) {
+                sendMPDCommand(MPDCommands.MPD_COMMAND_REQUEST_ALBUMART(track, offset));
+                if (!isConnected()) {
+                    return null;
+                }
+
+                // parse meta data
+                int binarySize = 0;
+                String response = readLine();
+                while (response != null && !response.startsWith("ACK")) {
+                    if (response.startsWith(MPDResponses.MPD_RESPONSE_SIZE)) {
+                        if (byteOutputStream == null) {
+                            size = Integer.valueOf(response.substring(MPDResponses.MPD_RESPONSE_SIZE.length()));
+                            byteOutputStream = new ByteArrayOutputStream(size);
+                        }
+                    } else if (response.startsWith(MPDResponses.MPD_RESPONSE_BINARY)) {
+                        binarySize = Integer.valueOf(response.substring(MPDResponses.MPD_RESPONSE_BINARY.length()));
+                        offset += binarySize;
+                        break;
+                    } else {
+                        return null;
+                    }
+                    response = readLine();
+                }
+                if (byteOutputStream == null || binarySize == 0) {
+                    return null;
+                }
+
+                // read binary data
+                byte[] bytes = readBytes(binarySize);
+                if (bytes == null || bytes.length != binarySize) {
+                    return null;
+                }
+
+                // read finishing 'OK'
+                response = readLine();
+                if (response == null || !response.startsWith("OK")) {
+                    return null;
+                }
+                byteOutputStream.write(bytes);
+            }
+
+            return byteOutputStream.toByteArray();
+            
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -2681,12 +2742,11 @@ public class MPDConnection {
      * @return The read string. null if no data is available.
      */
     private String readLine() throws IOException {
-        if (pReader != null) {
-            String line = pReader.readLine();
-            //printDebug("Read line: " + line);
-            return line;
+        return pReader != null ? pReader.readLine() : null;
         }
-        return null;
+
+    private byte[] readBytes(int length) throws IOException {
+        return pReader != null ? pReader.readBytes(length) : null;
     }
 
     /**
@@ -2794,6 +2854,44 @@ public class MPDConnection {
 
             // Set to indicate an aborted deidling.
             mDeIdlingTimedOut = true;
+        }
+    }
+
+    private static class MPDResponseReader {
+
+        private static final byte LINE_FEED = (byte) '\n';
+
+        private final InputStream mInputStream;
+
+        private MPDResponseReader(InputStream inputStream) {
+            mInputStream = inputStream;
+        }
+
+        boolean ready() throws IOException {
+            return mInputStream.available() > 0;
+        }
+
+        /**
+         * @return The read string. null if no data is available.
+         */
+        String readLine() throws IOException {
+            ByteArrayOutputStream buf = new ByteArrayOutputStream();
+            int b = mInputStream.read();
+            while (b != -1 && b != LINE_FEED) {
+                buf.write((byte) b);
+                b = mInputStream.read();
+            }
+            return buf.toString("UTF-8");
+        }
+
+        /**
+         * @param length Length of binary data to read
+         * @return The read binary data
+         */
+        byte[] readBytes(int length) throws IOException {
+            byte[] bytes = new byte[length];
+            mInputStream.read(bytes);
+            return mInputStream.read() == LINE_FEED ? bytes : null;
         }
     }
 }

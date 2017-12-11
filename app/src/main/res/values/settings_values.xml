@@ -129,6 +129,7 @@
 
     <string name="pref_artwork_provider_musicbrainz_key" translatable="false">musicbrainz</string>
     <string name="pref_artwork_provider_lastfm_key" translatable="false">last_fm</string>
+    <string name="pref_artwork_provider_mpd_albumart_key" translatable="false">mpd_albumart</string>
     <string name="pref_artwork_provider_fanarttv_key" translatable="false">fanart_tv</string>
     <string name="pref_artwork_provider_none_key" translatable="false">off</string>
     <string name="pref_artwork_provider_album_default" translatable="false">@string/pref_artwork_provider_musicbrainz_key</string>
@@ -138,6 +139,7 @@
         <item>@string/pref_artwork_provider_none_key</item>
         <item>@string/pref_artwork_provider_musicbrainz_key</item>
         <item>@string/pref_artwork_provider_lastfm_key</item>
+        <item>@string/pref_artwork_provider_mpd_albumart_key</item>
     </string-array>
 
     <string-array name="preference_artwork_artist_provider_values" translatable="false">
