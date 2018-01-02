@@ -234,6 +234,8 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
 
     private boolean mUseEnglishWikipedia;
 
+    private int mRestoreVolume = 0;
+
     public NowPlayingView(Context context) {
         this(context, null, 0);
     }
@@ -876,7 +878,13 @@ public class NowPlayingView extends RelativeLayout implements PopupMenu.OnMenuIt
         mVolumeIcon.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                MPDCommandHandler.setVolume(0);
+                if (mRestoreVolume == 0) {
+                    mRestoreVolume = mLastStatus.getVolume();
+                    MPDCommandHandler.setVolume(0);
+                } else {
+                    MPDCommandHandler.setVolume(mRestoreVolume);
+                    mRestoreVolume = 0;
+                }
             }
         });
 
