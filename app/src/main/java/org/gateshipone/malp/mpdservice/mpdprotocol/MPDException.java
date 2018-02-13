@@ -53,7 +53,7 @@ public class MPDException extends Exception {
             // Parse the error message (s. https://www.musicpd.org/doc/protocol/response_syntax.html#failure_response_syntax)
             String substring;
             // Start with the [ErrorCode@Offset]
-            substring = error.substring(error.indexOf('[') + 1,error.lastIndexOf('@'));
+            substring = error.substring(error.indexOf('[') + 1,error.lastIndexOf('@') != -1 ? error.lastIndexOf('@') : error.lastIndexOf(']'));
             try {
                 mErrorCode = Integer.valueOf(substring);
             } catch (NumberFormatException e) {
