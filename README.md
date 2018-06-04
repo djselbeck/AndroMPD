@@ -28,7 +28,7 @@ This whole project is licensed under the  **GPLv3 or later** license (see LICENS
  - Server statistics **(here is also the update database button)**
  - Artwork support with MusicBrainz, Last.fm, Fanart.tv as artwork provider (Album, artist images and fullscreen fanart)
  - Fanart view for tablets or stuff like that (click on the cover in the now playing view, or select fullscreen mode from menu)
- - Bulk downloader to download all artwork to local memory
+ - Bulk downloader for saving all artwork to local memory
  - HTTP audio streaming from MPD server
  - HTTP cover download
 
@@ -38,7 +38,7 @@ This is M.A.L.P. a fast and easy to use MPD client. The main goal is to create a
 
 This MPD client is tested with MPD 0.14, 0.19 and 0.20 but you really should not use outdated versions of MPD.
 
-**This MPD client works best with accurately taged music libraries. I recommend tagging using [MusicBrainz Picard](https://picard.musicbrainz.org/)** 
+**This MPD client works best with accurately tagged music libraries. I recommend tagging using [MusicBrainz Picard](https://picard.musicbrainz.org/)** 
 
 Starting with MPD 0.19 it is possible to filter list requests which allows this client to 
 use the AlbumArtist and Artist tag for retrieval of albums. So if you have a lot of "Greatest Hits" albums you will get a list entry for each one of it. 
